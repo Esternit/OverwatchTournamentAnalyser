@@ -80,8 +80,8 @@ class Parser:
                                 role = self.role_selector(tds[0].find("path")["d"])
                                 player_name = tds[0].find("a")["href"].split("/")[-1]
                                 division = self.get_division(tds[1].find("img")["src"])
-                                is_new = tds[2].find("svg")["class"] == config.CIRCLE_CLASS_PLUS_SVG
-                                is_new_role = tds[3].find("svg")["class"] == config.CIRCLE_CLASS_PLUS_SVG
+                                is_new = " ".join(tds[2].find("svg")["class"]) == config.CIRCLE_CLASS_PLUS_SVG
+                                is_new_role = " ".join(tds[3].find("svg")["class"]) == config.CIRCLE_CLASS_PLUS_SVG
 
                                 player_result.append({
                                     "role": role,
@@ -90,7 +90,7 @@ class Parser:
                                     "is_new": is_new,
                                     "is_new_role": is_new_role
                                 })
-
+                                
                             result.append({
                                 "name": name,
                                 "players": player_result

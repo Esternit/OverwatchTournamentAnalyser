@@ -4,17 +4,18 @@ from parser_app.crawler import AnakCrawler
 from parser_app.parser import Parser
 from data.logger import Logger
 from json_worker import load_json, save_json
+from data.config import config
 
 logger = Logger(__name__) 
 
-async def main ():
+async def main_utils():
     crawler = AnakCrawler()
     parser = Parser()
 
     # tournaments = await fetch_tournaments(crawler, parser)
     # matches = await fetch_matches(crawler, parser, tournaments)
-    # matches = await checker(crawler, parser, config.TOTAL_MATCHES_COUNT)
-    # await fetch_teams_info(crawler, parser)
+    matches = await checker(crawler, parser, config.TOTAL_MATCHES_COUNT)
+    # await fetch_matches_info(crawler, parser)
 
 async def fetch_tournaments(crawler, parser):
     html = await crawler.fetch_main()

@@ -26,11 +26,11 @@ def normalize_matches_info():
             if not old_match:
                 logger.warning(f"Match {match_num} not found in matches_info")
                 
-                if match_num == 3842 or match_num == 3924 or match_num == 3848:
+                if match_num == 2306 or match_num == 3842 or match_num == 3847 or match_num == 3924:
                     i += 1
             else:
                 if not match_checker(old_match, mathces_from_json[i]):
-                    logger.warning(f"Match {match_num} is not valid")
+                    logger.warning(f"Match {match_num} is not valid {old_match[0]['name']} vs {old_match[1]['name']} : {mathces_from_json[i]['team1']} vs {mathces_from_json[i]['team2']}")
                 else:
                     new_matches_info[match_num] = {
                         "group": mathces_from_json[i]["group"],
@@ -96,13 +96,14 @@ def final_converter():
                 result.append({
                     "id":  len(result) + 1,
                     "player_id": player_ids[player["name"]],
+                    "game_id": int(match),
                     "role": player["role"],
                     "is_new": player["is_new"],
                     "is_new_role": player["is_new_role"],
                     "division": player["division"],
                     "team_avg_sr": matches_full_info[match]["team_1_avg_sr"] if team["name"] == matches_full_info[match]["team_1_name"] else matches_full_info[match]["team_2_avg_sr"],
                     "opponent_avg_sr": matches_full_info[match]["team_2_avg_sr"] if team["name"] == matches_full_info[match]["team_1_name"] else matches_full_info[match]["team_1_avg_sr"],
-                    "taget": matches_full_info[match]["team_1_score"] > matches_full_info[match]["team_2_score"] if team["name"] == matches_full_info[match]["team_1_name"] else matches_full_info[match]["team_2_score"] > matches_full_info[match]["team_1_score"],
+                    "target": matches_full_info[match]["team_1_score"] > matches_full_info[match]["team_2_score"] if team["name"] == matches_full_info[match]["team_1_name"] else matches_full_info[match]["team_2_score"] > matches_full_info[match]["team_1_score"],
                 })
 
     save_json("data", result)
