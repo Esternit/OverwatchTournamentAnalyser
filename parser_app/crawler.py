@@ -35,3 +35,10 @@ class AnakCrawler:
                 
                     html = await response.text()
                     return html
+
+    async def fetch_teams_page(self, number):
+        async with aiohttp.ClientSession(headers=self.headers) as session:
+            async with session.get(config.TOURNAMENTS_URL + str(number) + "?tab=teams") as response:
+                
+                    html = await response.text()
+                    return html

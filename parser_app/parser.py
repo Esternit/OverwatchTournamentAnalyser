@@ -102,6 +102,35 @@ class Parser:
 
         return result
     
+    def parse_tournament_team_info(self, html):
+        soup = BeautifulSoup(html, 'html.parser')
+
+        result = []
+
+        try:
+            teams = soup.find_all('div', class_ = config.TEAM_CLASS)
+            if teams:
+                for team in teams:
+                    header_container = team.find('div', class_ = config.TEAM_HEADER_CLASS)
+
+                    if header_container:
+                        stats = header_container.find_all('h4')
+
+                        placement = header_container.find("small", class_ = config.TEAM_PLACEMENT_CLASS)
+
+                        result.append({
+                            "name": stats[0].text.strip().split()[1],
+                            "avg. sr": stats[1].text.strip().split(": ")[1],
+                            "group": stats[2].text.strip(),
+                            "placement": placement.text.strip() if placement else ""
+                        })
+
+        except Exception as e:
+            teams = []
+            logger.error(e)
+
+        return result
+    
     def role_selector(self, role_svg):
         if role_svg == config.TANK_CLASS_SVG:
             return "tank"
