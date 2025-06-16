@@ -1,9 +1,9 @@
-from pathlib import Path
 import json
 
 from parser_app.crawler import AnakCrawler
 from parser_app.parser import Parser
 from data.logger import Logger
+from json_worker import load_json, save_json
 
 logger = Logger(__name__) 
 
@@ -87,14 +87,6 @@ async def fetch_teams_info(crawler, parser):
 
     save_json(f"teams_info", teams_info)
 
-def save_json(name, file):
-    output_path = Path(f"data/json/{name}.json")
-    
-    with open(output_path, "w", encoding="utf-8") as f:
-        json.dump(file, f, ensure_ascii=False, indent=4)
-    
-    logger.info(f"Saved {name} to {output_path}")
-
 async def checker(crawler, parser, max_id):
     matches_info = load_json("matches_info_old")
     match_id = 1
@@ -112,20 +104,6 @@ async def checker(crawler, parser, max_id):
 
     save_json(f"matches_info", matches_info)
 
-def load_json(name):
-    input_path = Path(f"data/json/{name}.json")
-    
-    try:
-        with open(input_path, "r", encoding="utf-8") as f:
-            data = json.load(f)
-        logger.info(f"Loaded {name} from {input_path}")
-        return data
-    except FileNotFoundError:
-        logger.warning(f"File {input_path} not found!")
-        return None
-    except json.JSONDecodeError:
-        logger.error(f"Invalid JSON in {input_path}!")
-        return None
 
 
     
