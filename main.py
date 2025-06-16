@@ -14,7 +14,7 @@ async def main ():
 
     # tournaments = await fetch_tournaments(crawler, parser)
     # matches = await fetch_matches(crawler, parser, tournaments)
-    matches = await fetch_matches_info(crawler, parser)
+    # matches = await checker(crawler, parser, config.TOTAL_MATCHES_COUNT)
 
 async def fetch_tournaments(crawler, parser):
     html = await crawler.fetch_main()
@@ -78,6 +78,23 @@ def save_json(name, file):
         json.dump(file, f, ensure_ascii=False, indent=4)
     
     logger.info(f"Saved {name} to {output_path}")
+
+async def checker(crawler, parser, max_id):
+    matches_info = load_json("matches_info_old")
+    match_id = 1
+
+    while match_id <= max_id:
+        if str(match_id) not in matches_info:
+            html = await crawler.fetch_match_page(match_id)
+            match = parser.parse_match_page(html)
+
+            matches_info[match_id] = match
+
+            logger.info(f"Parsed {match_id}")
+        
+        match_id += 1
+
+    save_json(f"matches_info", matches_info)
 
 def load_json(name):
     input_path = Path(f"data/json/{name}.json")
