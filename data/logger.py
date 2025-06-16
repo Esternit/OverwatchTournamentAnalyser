@@ -9,7 +9,7 @@ class Logger:
             format='%(asctime)s - %(levelname)s - %(name)s - %(message)s',
             handlers=[
                 logging.StreamHandler(),
-                logging.FileHandler(config.LOG_DIR / "parser.log")
+                logging.FileHandler(config.LOG_DIR / "parser.log", encoding='utf-8')
             ]
         )
         
